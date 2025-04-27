@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stock Sense - Stock Market Portfolio Analyser</title>
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <h1 class="logo">Stock Sense  </h1>
+        <nav class="navbar">
+            <div class="dropdown">
+                <button class="dropbtn">Menu ▾</button>
+                <div class="dropdown-content">
+                    <a href="/signin">Sign In</a>
+                    <a href="/signup">Sign Up</a>
+
+                    <a href="#contact">Contact Us</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+<!-- VIDEO SECTION -->
+<section class="video-section">
+    <video autoplay muted loop playsinline>
+        <source src="static/Stock_Video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+   
+</section>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="static/stock_image.jpg" alt="Stock Market">
+            <div class="quote">
+                <p><strong>“The goal of a successful trader is to make the best trades. Money is secondary.”</strong><br>
+                – Alexander Elder</p>
+                <p class="explanation">
+                    With an emphasis on the importance of focussing on the process, Elder’s quote states that it is prudent
+                    to concentrate on investing instead of fixating solely on profits. Well-informed, disciplined trades
+                    can increase your chance of long-term success, with financial gain as a natural outcome.
+                </p>
+                <a href="/signin" class="get-started-btn">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ARTICLES SECTION -->
+    <section class="articles">
+        <h2>Latest Stock Market Articles</h2>
+        <div class="article-grid">
+            <div class="article-card">
+                <h3>Understanding NIFTY 50</h3>
+                <p>An introduction to India’s premier index and what drives its movement.</p>
+                <a href="#">Read More →</a>
+            </div>
+            <div class="article-card">
+                <h3>How to Diversify a Portfolio</h3>
+                <p>Tips and strategies to reduce your risk in stock investing.</p>
+                <a href="#">Read More →</a>
+            </div>
+            <div class="article-card">
+                <h3>Top 5 Stocks to Watch</h3>
+                <p>Market experts share their views on promising companies.</p>
+                <a href="#">Read More →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT US SECTION -->
+    <div class="contact-ribbon">
+        <h2>Contact Us</h2>
+    </div>
+    
+    <form class="contact-form" id="contact-form">
+    
+    <form class="contact-form" id="contact-form">
+        <input type="text" id="contact-name" placeholder="Your Name" required>
+        <input type="email" id="contact-email" placeholder="Your Email" required>
+        <textarea id="contact-message" placeholder="Your Message" rows="15" required></textarea>
+        <button type="submit">Send Message</button>
+    </form>
+    
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirm-modal')">&times;</span>
+            <h3>Confirm Your Details</h3>
+            <p><strong>Name:</strong> <span id="conf-name"></span></p>
+            <p><strong>Email:</strong> <span id="conf-email"></span></p>
+            <p><strong>Message:</strong> <span id="conf-message"></span></p>
+            <button onclick="sendConfirmation()">Yes, Send</button>
+        </div>
+    </div>
+    
+    <!-- Sent Modal -->
+    <div class="modal" id="sent-modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sent-modal')">&times;</span>
+            <h3>Message Sent!</h3>
+            <p>We will contact you soon.</p>
+        </div>
+    </div>
+    
+
+    <!-- FOOTER -->
+    <footer>
+        <p>&copy; 2025 Stock Sense. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

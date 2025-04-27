@@ -1,0 +1,97 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f8f9fa; /* Light grey background */
+    color: #212529; /* Dark grey text */
+}
+
+/* Header styling */
+header {
+    border-bottom: 2px solid #007bff; /* Blue border */
+}
+
+header h1 {
+    margin: 0;
+}
+
+.nav {
+    padding: 1em 0;
+}
+
+.nav-link {
+    color: #fff !important; /* White text for links */
+    transition: background-color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.2); /* Lighten on hover */
+}
+
+/* Main content styling */
+main {
+    padding: 20px 0;
+    background-color: #ffffff; /* White background for content */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+h2 {
+    margin-bottom: 20px; /* Space below headings */
+}
+
+/* Alert messages */
+.alert {
+    transition: opacity 0.5s ease;
+}
+
+.alert-dismissible .btn-close {
+    padding: 0.3rem 0.7rem;
+}
+
+/* Table styling */
+table {
+    width: 100%; /* Full width for table */
+    margin-top: 20px; /* Space above table */
+    border-collapse: collapse;
+    background-color: #ffffff; /* White background */
+}
+
+table th,
+table td {
+    padding: 12px; /* Padding inside table cells */
+    border: 1px solid #dee2e6; /* Light grey border */
+    text-align: left; /* Left-align text */
+}
+
+table th {
+    background-color: #f1f1f1; /* Light grey for header */
+}
+
+/* Button styling */
+.btn-primary {
+    background-color: #007bff; /* Blue button */
+    border-color: #007bff; /* Blue border */
+}
+
+.btn-primary:hover {
+    background-color: #0056b3; /* Darker blue when hover */
+    border-color: #0056b3; /* Darker blue border on hover */
+}
+
+/* Footer styling */
+footer {
+    margin-top: 20px; /* Space above footer */
+    padding: 10px 0;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.5rem; /* Smaller heading on mobile */
+    }
+
+    .nav-link {
+        padding: 0.5rem; /* Reduce padding on mobile */
+    }
+}

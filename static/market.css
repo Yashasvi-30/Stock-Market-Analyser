@@ -1,0 +1,87 @@
+
+.navbar-nav.center-nav {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .navbar-nav .nav-link {
+    font-weight: bold;
+    color: #333;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #007bff;
+  }
+
+/* Funky quiz section */
+#quiz-section {
+    background-color: #ffcc00;
+    color: #fff;
+    padding: 40px 0;
+}
+
+#quiz-section h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+#quiz-section p {
+    font-size: 1.2rem;
+}
+
+#quiz-section .btn {
+    font-size: 1.2rem;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+/* Stock Facts Section */
+#facts-section {
+    background-color: #f4f4f4;
+    padding: 40px 0;
+}
+
+#facts-section h3 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+#facts-section ul {
+    font-size: 1.1rem;
+}
+
+#facts-section li {
+    margin: 10px 0;
+}
+
+/* Articles Section */
+#articles-section .card {
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#articles-section .card-img-top {
+    border-radius: 10px 10px 0 0;
+    height: 200px;
+    object-fit: cover;
+}
+
+#articles-section .card-body {
+    text-align: center;
+}
+
+#articles-section .card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+#articles-section .card-text {
+    font-size: 1rem;
+}
+
+#articles-section .btn {
+    background-color: #28a745;
+    color: #fff;
+    border-radius: 5px;
+}
+   

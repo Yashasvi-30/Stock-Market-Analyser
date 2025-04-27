@@ -1,0 +1,13 @@
+streamlit
+pandas
+scikit-learn
+nltk
+joblib
+streamlit
+tensorflow-macos
+numpy
+
+flask
+tensorflow
+scikit-learn
+nltk

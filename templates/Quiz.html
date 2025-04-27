@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stock Market Quiz</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .quiz-container {
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    #score, #timer {
+      font-size: 18px;
+      margin: 5px 0 10px;
+      color: #555;
+    }
+
+    #question {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .btn {
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #45a049;
+    }
+
+    .next-btn {
+      background-color: #008CBA;
+    }
+
+    .next-btn:hover {
+      background-color: #007bb5;
+    }
+
+    .correct {
+      background-color: #28a745;
+    }
+
+    .wrong {
+      background-color: #dc3545;
+    }
+
+    .fade {
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Progress Bar */
+    .progress-bar {
+      width: 100%;
+      background-color: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      height: 10px;
+      margin-bottom: 20px;
+    }
+
+    .progress {
+      height: 100%;
+      width: 100%;
+      background-color: #4caf50;
+      transition: width 1s linear;
+    }
+
+    #final-score {
+      font-size: 24px;
+      margin: 20px 0;
+      color: #333;
+    }
+
+    @media (max-width: 500px) {
+      .btn-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container" id="quiz">
+    <h1>📈 Stock Market Quiz</h1>
+
+    <div id="score">Score: 0</div>
+    <div id="timer">Time Left: 15s</div>
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <div id="question-container" class="fade">
+      <div id="question">Question text</div>
+      <div id="answer-buttons" class="btn-grid"></div>
+    </div>
+
+    <div class="controls">
+      <button id="next-btn" class="next-btn btn">Next</button>
+    </div>
+  </div>
+
+  <div class="quiz-container" id="result" style="display: none;">
+    <h1>🎉 Quiz Completed!</h1>
+    <div id="final-score">You scored 0 points.</div>
+    <button class="btn" onclick="restartQuiz()">Play Again</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is an IPO?",
+        answers: [
+          { text: "Initial Public Offering", correct: true },
+          { text: "International Price Order", correct: false },
+          { text: "Internal Policy Option", correct: false },
+          { text: "Investment Plan Outlook", correct: false }
+        ]
+      },
+      {
+        question: "Which index represents 30 major companies in India?",
+        answers: [
+          { text: "Nifty 50", correct: false },
+          { text: "Sensex", correct: true },
+          { text: "Dow Jones", correct: false },
+          { text: "NASDAQ", correct: false }
+        ]
+      },
+      {
+        question: "Who regulates the stock market in India?",
+        answers: [
+          { text: "SEBI", correct: true },
+          { text: "RBI", correct: false },
+          { text: "NABARD", correct: false },
+          { text: "IRDA", correct: false }
+        ]
+      },
+      {
+        question: "What is a bull market?",
+        answers: [
+          { text: "Market going down", correct: false },
+          { text: "Market going up", correct: true },
+          { text: "Market crashing", correct: false },
+          { text: "Market stagnant", correct: false }
+        ]
+      },
+      {
+        question: "What is the full form of NSE?",
+        answers: [
+          { text: "National Stock Exchange", correct: true },
+          { text: "National Securities Exchange", correct: false },
+          { text: "New Stock Economy", correct: false },
+          { text: "National Sector Exchange", correct: false }
+        ]
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+    let timer;
+    let timeLeft = 15;
+    
+    function startGame() {
+      score = 0;
+      currentQuestionIndex = 0;
+      timeLeft = 15;
+      document.getElementById("score").textContent = `Score: ${score}`;
+      document.getElementById("timer").textContent = `Time Left: ${timeLeft}s`;
+      showQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      timer = setInterval(function() {
+        timeLeft--;
+        document.getElementById("timer").textContent = `Time Left: ${timeLeft}s`;
+        if (timeLeft === 0) {
+          nextQuestion();
+        }
+      }, 1000);
+    }
+
+    function showQuestion() {
+      clearInterval(timer);
+      timeLeft = 15;
+      startTimer();
+      
+      const question = questions[currentQuestionIndex];
+      document.getElementById("question").textContent = question.question;
+      const buttons = document.getElementById("answer-buttons");
+      buttons.innerHTML = '';
+      
+      question.answers.forEach((answer, index) => {
+        const button = document.createElement('button');
+        button.textContent = answer.text;
+        button.classList.add('btn');
+        button.onclick = () => selectAnswer(answer);
+        buttons.appendChild(button);
+      });
+    }
+
+    function selectAnswer(answer) {
+      const correct = answer.correct;
+      const button = event.target;
+      if (correct) {
+        score++;
+        button.classList.add('correct');
+      } else {
+        button.classList.add('wrong');
+      }
+
+      document.getElementById("score").textContent = `Score: ${score}`;
+      document.getElementById("next-btn").style.display = "block";
+    }
+
+    function nextQuestion() {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        endGame();
+      }
+    }
+
+    function endGame() {
+      clearInterval(timer);
+      document.getElementById("quiz").style.display = "none";
+      document.getElementById("result").style.display = "block";
+      document.getElementById("final-score").textContent = `You scored ${score} points.`;
+    }
+
+    function restartQuiz() {
+      document.getElementById("quiz").style.display = "block";
+      document.getElementById("result").style.display = "none";
+      startGame();
+    }
+
+    document.getElementById("next-btn").addEventListener("click", nextQuestion);
+
+    startGame();
+  </script>
+
+</body>
+</html>

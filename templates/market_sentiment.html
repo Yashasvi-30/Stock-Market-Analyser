@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Sentiment Analyzer</title>
+    <link rel="stylesheet" href="static/marketstyle.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+    
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container-fluid">
+              <a class="navbar-brand fw-bold" href="#">Stock Sense</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav center-nav">
+                  <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/portfolio">Portfolio</a></li>
+                  <li class="nav-item"><a class="nav-link" href="#risk">Risk Assessment</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/market_sentiment">Market Sentiment</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/smart-insights">Smart Insights</a></li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+   
+
+    <main>
+        <section class="sentiment-section">
+            <h1>Market Sentiment Analysis</h1>
+            <p>Share your thoughts about the stock market, and we'll analyze the sentiment for you!</p>
+            
+            <div class="form-container">
+                <form id="marketSentimentForm">
+                    <textarea id="marketInput" rows="4" placeholder="Enter your stock market sentiment..." required></textarea>
+                    <button type="submit">Analyze Sentiment</button>
+                </form>
+            </div>
+            
+            <div id="resultContainer" class="result-container">
+                <h2>Predicted Sentiment</h2>
+                <p id="sentimentResult">Your sentiment result will appear here...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Stock Portfolio Analyzer | All Rights Reserved</p>
+    </footer>
+
+    <script>
+        document.getElementById('marketSentimentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const marketMessage = document.getElementById('marketInput').value;
+
+            const response = await fetch('/predict-market-sentiment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: marketMessage })
+            });
+
+            const data = await response.json();
+            const sentiment = data.sentiment;
+            
+            document.getElementById('sentimentResult').innerText = `Sentiment: ${sentiment}`;
+        });
+    </script>
+
+</body>
+
+</html>
