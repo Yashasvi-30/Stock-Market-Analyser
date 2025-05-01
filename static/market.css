@@ -1,5 +1,9 @@
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', sans-serif;
+  }
 
-.navbar-nav.center-nav {
+  .navbar-nav.center-nav {
     margin: 0 auto;
     display: flex;
     justify-content: center;
@@ -12,7 +16,6 @@
   .navbar-nav .nav-link:hover {
     color: #007bff;
   }
-
 /* Funky quiz section */
 #quiz-section {
     background-color: #ffcc00;
@@ -84,4 +87,9 @@
     color: #fff;
     border-radius: 5px;
 }
-   
+footer {
+    background: #0d1b2a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}

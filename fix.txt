@@ -1,0 +1,36 @@
+# Twelve Data API Key
+TD_API_KEY = 'd128a9e96d7c4442af79d360dacc2257'
+
+# Fetch stock time series data
+def fetch_time_series_data(symbol):
+    url = f'https://api.twelvedata.com/time_series?symbol={symbol}&interval=1day&outputsize=30&apikey={TD_API_KEY}'
+    response = requests.get(url)
+    data = response.json()
+
+    if "values" in data:
+        return data["values"]
+    else:
+        print("API Error:", data.get("message"))
+        return None
+
+# Route to handle form input and display
+@app.route("/stockscreener", methods=["GET", "POST"])
+def stock_screener():
+    if request.method == "POST":
+        stock_symbol = request.form.get("symbol")
+        if stock_symbol:
+            return redirect(url_for("show_stock_data", symbol=stock_symbol.upper()))
+        else:
+            flash("Please enter a stock symbol.")
+            return redirect(url_for("stock_screener"))
+    return render_template("stock_time_series.html")
+
+# Route to show stock data
+@app.route("/stock/<symbol>")
+def show_stock_data(symbol):
+    time_series_data = fetch_time_series_data(symbol)
+    if time_series_data:
+        return render_template("stock_time_series.html", symbol=symbol, time_series_data=time_series_data)
+    else:
+        flash(f"No data found for symbol: {symbol}")
+        return redirect(url_for("stock_screener"))

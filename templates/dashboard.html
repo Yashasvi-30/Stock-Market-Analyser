@@ -19,6 +19,7 @@
       display: flex;
       justify-content: center;
       gap: 1.5rem;
+      
     }
     .navbar-nav .nav-link {
       font-weight: bold;
@@ -38,6 +39,8 @@
     .user-info-card {
       display: flex;
       align-items: center;
+      background-color:#77a5d6;
+      
     }
 
     .user-info-card img {
@@ -88,14 +91,13 @@
     }
 
     footer {
-      background: #e9ecef;
-      padding: 15px 0;
-      text-align: center;
-      h1, h2 {
-            text-align: center;
-            color: #222;
-        }
-
+    background: #0d1b2a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    position:relative;
+    bottom:0;
+          }
         .sector-container {
             margin: 40px auto;
             max-width: 1200px;
@@ -157,7 +159,86 @@
             font-size: 0.9rem;
             color: #777;
         }
-    }
+    
+
+    /* General Styles */
+     .smart-insights-container {
+  padding: 40px;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+     .section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.smart-insights-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 0 10px;
+  /* Ensure cards don't overflow */
+  grid-auto-rows: minmax(200px, auto);
+}
+
+/* Individual Card */
+.insight-card {
+  background: #d1e7f6;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+  height: 100%; /* Ensure cards take full height of the grid cell */
+  min-height: 180px; /* Prevent cards from becoming too small */
+  
+}
+
+.insight-card:hover {
+  transform: translateY(-5px);
+}
+
+.insight-icon {
+  font-size: 2rem;
+  margin-right: 20px;
+  color: #3498db;
+}
+
+.insight-content h4 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.insight-content p {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .insight-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .insight-icon {
+    margin-bottom: 10px;
+  }
+}
+
+    
   </style>
 </head>
 <body>
@@ -173,9 +254,10 @@
         <ul class="navbar-nav center-nav">
           <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="/portfolio">Portfolio</a></li>
-          <li class="nav-item"><a class="nav-link" href="#risk">Risk Assessment</a></li>
+          <li class="nav-item"><a class="nav-link" href="/stockscreenerabc">Stock Screener</a></li>
           <li class="nav-item"><a class="nav-link" href="/market_sentiment">Market Sentiment</a></li>
           <li class="nav-item"><a class="nav-link" href="/smart-insights">Smart Insights</a></li>
+          
         </ul>
       </div>
     </div>
@@ -192,33 +274,36 @@
     </div>
   </div>
 
-  <!-- Famous Stocks -->
+  <!-- Famous Stocks 
   <h5>Famous Stocks</h5>
   <div class="row stock-grid g-4 mb-4">
     {% for stock in famous_stocks %}
     <div class="col-md-4">
       <div class="card">
-        <h5>{{ stock.name }}</h5>
-        <table class="table table-sm mt-3">
-          <tr><td>Price</td><td>₹{{ stock.price }}</td></tr>
-          <tr><td>Sector</td><td>{{ stock.sector }}</td></tr>
-          <tr><td>Market Cap</td><td>{{ stock.market_cap }}</td></tr>
-        </table>
+          <h5>{{ stock.name }}</h5>
+          <table class="table table-sm mt-3">
+              <tr><td>Price</td><td>₹{{ stock.details.Price }}</td></tr>
+              <tr><td>High</td><td>₹{{ stock.details.High }}</td></tr>
+              <tr><td>Low</td><td>₹{{ stock.details.Low }}</td></tr>
+          </table>
       </div>
-    </div>
+     </div>
+  
+    
     {% endfor %}
-  </div>
+  </div>-->
+ 
 
   <!-- Top Summary Cards -->
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 ">
       <div class="equal-card d-flex flex-column justify-content-center align-items-center text-center">
         <h5>Weather</h5>
         <p class="display-6">🌤️ 28°C</p>
-        <p class="text-muted small">Delhi, India</p>
+        <p class="text-muted small">Dehradun, India</p>
       </div>
     </div>
-    <div class="col-md-8">
+     <div class="col-md-8">
       <div class="equal-card">
         <h5 class="text-center mb-3">Top 3 Stocks (by Capital)</h5>
         <div class="chart-box">
@@ -230,7 +315,7 @@
 
   <div class="row">
     <!-- Bar Chart -->
-    <div class="col-md-4">
+    <div class="col-md-4 ">
       <div class="equal-card">
         <h5 class="text-center mb-3">Stock Data</h5>
         <div class="chart-box">
@@ -240,7 +325,7 @@
     </div>
   
     <!-- Pie Chart -->
-    <div class="col-md-4">
+    <div class="col-md-4 ">
       <div class="equal-card">
         <h5 class="text-center mb-3">Market Share</h5>
         <div class="chart-box">
@@ -262,23 +347,24 @@
   
       
 
-  <!-- Insights -->
-  <div class="equal-card">
-    <h5 class="mb-3">Smart Insights</h5>
-    <ul>
-      <li>📈 Best performer: <strong>TCS</strong> (+₹1,200 this month)</li>
-      <li>📉 SBI dropped 3%</li>
-      <li>💡 Consider diversifying beyond Technology</li>
-    </ul>
-  </div>
 
   <!-- Portfolio Summary -->
   <div class="portfolio-summary">
     <h5 class="text-center">Portfolio Summary</h5>
     <div class="row text-center justify-content-center">
-      <div class="col-md-3 summary-box"><h6>Total Shares</h6><p><strong>{{ total_shares }}</strong></p></div>
-      <div class="col-md-3 summary-box"><h6>Total Value</h6><p><strong>₹{{ total_value }}</strong></p></div>
-      <div class="col-md-3 summary-box"><h6>Total Profit</h6><p><strong>₹{{ total_profit }}</strong></p></div>
+      <div class="col-md-3 summary-box">
+        <h6>Total Shares</h6>
+        <p>{{total_shares }}</p>
+      </div>
+      <div class="col-md-3 summary-box">
+        <h6>Total Value</h6>
+        <p>₹{{total_value }}</p>
+      </div>
+      <div class="col-md-3 summary-box">
+        <h6>Total Profit</h6>
+        <p>₹{{total_profit }}</p>
+      </div>
+      
     </div>
   </div>
   
@@ -309,6 +395,63 @@
     You haven't added any stocks yet. <a href="/portfolio">Click here to add some</a>.
   </div>
   {% endif %}
+
+  <p></p>
+  <p></p>
+
+  <!-- Insights -->
+  <div class="equal-card">
+    <div class="smart-insights-container">
+      <h2 class="section-title">Smart Insights</h2>
+      <div class="smart-insights-cards">
+        <!-- Card 1 -->
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Your portfolio grew by 4.2% this week!</h4>
+            <p>Great progress, keep it up. Consider diversifying for more growth.</p>
+          </div>
+        </div>
+        
+        <!-- Card 2 -->
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Tesla stock dropped 7% — Check your exposure!</h4>
+            <p>Consider reducing your position if you're overexposed.</p>
+          </div>
+        </div>
+        
+        <!-- Card 3 -->
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-newspaper"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Amazon Prime Day boosted AMZN stock by 2%.</h4>
+            <p>Take advantage of this boost and review your position.</p>
+          </div>
+        </div>
+        
+        <!-- Card 4 -->
+        <div class="insight-card">
+          <div class="insight-icon">
+            <i class="fas fa-arrow-up"></i>
+          </div>
+          <div class="insight-content">
+            <h4>Your portfolio is 80% tech stocks — Consider diversifying.</h4>
+            <p>Try adding stocks from other sectors like Healthcare and Utilities.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
 <p></p>
   <!-- News -->
   <div class="news-section" id="insights">
@@ -379,14 +522,14 @@ new Chart(document.getElementById('doughnutChart'), {
   data: {
     labels: ['NSE', 'BSE'],
     datasets: [{
-      data: [3,0], // Example data for NSE and BSE
+      data: [4,0], // Example data for NSE and BSE
       backgroundColor: ['#36a2eb', '#ff9f40'],
     }]
   },
   options: {
     responsive: true,
     maintainAspectRatio: true,
-    height: 90,
+    height: 50,
     cutoutPercentage: 70, // Adjust this value to control the inner radius (donut hole)
     plugins: {
       legend: {

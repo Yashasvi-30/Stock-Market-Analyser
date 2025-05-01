@@ -1,147 +1,152 @@
-/* General Styles */
+
+
+  .navbar-nav.center-nav {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+  .navbar-nav .nav-link {
+    font-weight: bold;
+    color: #333;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #007bff;
+  }/* General Styling for the Body and Page */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-}
-
-header {
-    background-color: #ffffff;
-    padding: 15px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.navbar {
-    margin: 0 auto;
-}
-
-.navbar-brand {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #007bff;
-}
-
-.navbar-nav {
-    list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 0;
-}
-
-.nav-item {
-    display: inline-block;
-    margin-right: 15px;
-}
-
-.nav-link {
-    text-decoration: none;
+    background-color: #f4f7fc;
     color: #333;
-    font-size: 1.1rem;
 }
 
-.nav-link:hover {
-    color: #007bff;
-}
-
-.center-nav {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-main {
-    padding: 50px 20px;
-}
-
-.sentiment-section {
-    max-width: 800px;
+/* Main Container with Rounded Corners */
+.container {
+    width: 80%;
+    max-width: 1200px;
     margin: 0 auto;
+    padding: 40px 20px;
     text-align: center;
+    background-color: #fff;
+    border-radius: 15px; /* Rounded corners for the entire container */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.sentiment-section h1 {
+/* Title Styling */
+.title {
     font-size: 2.5rem;
-    color: #343a40;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 20px;
 }
 
-.sentiment-section p {
+/* Description Styling */
+.description {
     font-size: 1.1rem;
-    color: #6c757d;
+    color: #7f8c8d;
     margin-bottom: 40px;
 }
 
+/* Form Container Styling */
 .form-container {
     margin-bottom: 40px;
 }
 
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
+/* Textarea Styling */
 textarea {
-    width: 80%;
-    padding: 15px;
+    width: 100%;
+    padding: 12px;
     font-size: 1.1rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 10px; /* Rounded corners for textarea */
+    resize: vertical;
     margin-bottom: 20px;
-    resize: none;
-    min-height: 120px;
+    box-sizing: border-box;
+    outline: none;
 }
 
+/* Button Styling */
 button {
-    padding: 12px 25px;
+    padding: 12px 24px;
+    background-color: #3498db;
+    color: white;
     font-size: 1.1rem;
-    color: #fff;
-    background-color: #007bff;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px; /* Rounded corners for button */
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #2980b9;
 }
 
+/* Result Section Styling */
 .result-container {
     margin-top: 40px;
-    padding: 20px;
-    background-color: #f1f3f5;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #ecf0f1;
+    padding: 30px;
+    border-radius: 15px; /* Rounded corners for result container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.result-container h2 {
+.result-title {
     font-size: 1.8rem;
-    color: #343a40;
-    margin-bottom: 15px;
+    color: #34495e;
+    margin-bottom: 20px;
 }
 
-#sentimentResult {
-    font-size: 1.3rem;
-    color: #28a745; /* Positive sentiment color */
-}
-
-/* For negative sentiment result */
-#sentimentResult.negative {
-    color: #dc3545;
-}
-
-/* For neutral sentiment result */
-#sentimentResult.neutral {
-    color: #ffc107;
-}
-
-footer {
-    text-align: center;
+.result-box {
     padding: 20px;
-    background-color: #343a40;
-    color: white;
-    margin-top: 50px;
+    background-color: #fff;
+    border-radius: 10px; /* Rounded corners for result box */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-footer p {
+.result-text {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px;
+    text-align: center;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    margin-top: 50px;
+    border-radius: 15px 15px 0 0; /* Rounded top corners for footer */
+}
+
+/* Footer Container Styling */
+.footer-container p {
     margin: 0;
+    font-size: 1rem;
+}
+.video-bg {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+  .positive {
+    color: green;
+    font-weight: bold;
+}
+
+.negative {
+    color: red;
+    font-weight: bold;
+}
+
+.neutral {
+    color: gray;
+    font-weight: bold;
 }

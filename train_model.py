@@ -29,18 +29,29 @@ df['category'] = df['category'].astype(str)
 # Show original unique categories
 print("Original unique category values:", df['category'].unique())
 
+# --- ADD THIS --- #
+# Negation Handling Function
+def handle_negation(text):
+    negation_pattern = r'\b(not|no|never)\s+(\w+)\b'
+    modified_text = re.sub(negation_pattern, r'\1_\2', text)
+    return modified_text
+
 # Clean text function
 def clean_text(text):
-    text = re.sub(r"http\S+|@\w+|#\w+|[^a-zA-Z\s]", '', text.lower())
+    text = text.lower()
+    text = handle_negation(text)  # Handle negations first!
+    text = re.sub(r"http\S+|@\w+|#\w+|[^a-zA-Z\s]", '', text)
     text = re.sub(r'\s+', ' ', text).strip()
     tokens = text.split()
     tokens = [word for word in tokens if word not in stopwords.words('english')]
     return ' '.join(tokens)
 
+# ----------------- #
+
 # Apply cleaning
 df['clean_text'] = df['clean_text'].apply(clean_text)
 
-# Map numeric sentiment values to classes (if applicable)
+# Map numeric sentiment values to classes
 label_map = {
     '-1.0': 0,  # Negative
     '0.0': 1,   # Neutral

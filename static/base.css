@@ -81,8 +81,10 @@ table th {
 
 /* Footer styling */
 footer {
-    margin-top: 20px; /* Space above footer */
-    padding: 10px 0;
+    background: #0d1b2a;
+    color: white;
+    padding: 20px;
+    text-align: center;
 }
 
 /* Media Queries for Responsiveness */

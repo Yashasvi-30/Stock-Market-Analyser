@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from flask_cors import CORS
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from extensions import db, bcrypt, login_manager
-from utils.news import fetch_stock_news
+from utils.news import  news
 from utils.portfolio import load_portfolio, add_stock, remove_stock, get_portfolio
 from utils.analysis import analyze_sentiment, perform_risk_analysis
 from models.portfolio import Portfolio
@@ -13,6 +13,46 @@ from models.stock import Stock
 from datetime import datetime
 import requests
 
+API_KEY = '2SU4SFQ9OYTZZMJ1'
+API_BASE_URL = 'https://www.alphavantage.co/query'
+
+
+
+def fetch_stock_data(symbol):
+    # Fetch real-time price
+    price_params = {
+        "function": "GLOBAL_QUOTE",
+        "symbol": symbol,
+        "apikey": API_KEY
+    }
+    price_resp = requests.get(API_BASE_URL, params=price_params)
+    price_data = price_resp.json()
+
+    price = "N/A"
+    if "Global Quote" in price_data and price_data["Global Quote"].get("05. price"):
+        try:
+            price = round(float(price_data["Global Quote"]["05. price"]), 2)
+        except:
+            pass
+
+    # Fetch sector and market cap
+    overview_params = {
+        "function": "OVERVIEW",
+        "symbol": symbol,
+        "apikey": API_KEY
+    }
+    overview_resp = requests.get(API_BASE_URL, params=overview_params)
+    overview_data = overview_resp.json()
+
+    sector = overview_data.get("Sector", "N/A")
+    market_cap = overview_data.get("MarketCapitalization", "N/A")
+    if market_cap != "N/A":
+        try:
+            market_cap = f"{int(market_cap) // 1_00_00_000} Cr"  # Convert to Crores
+        except:
+            market_cap = "N/A"
+
+    return {"price": price, "sector": sector, "market_cap": market_cap}
 
 # App Initialization
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -85,7 +125,6 @@ def auth():
 
     return render_template("auth.html")
 
-# Dashboard Page
 @app.route("/dashboard")
 @login_required
 def dashboard():
@@ -96,36 +135,72 @@ def dashboard():
     total_shares = sum(stock.shares for stock in portfolio_data)
     total_value = sum(stock.shares * stock.avg_cost for stock in portfolio_data)
     total_profit = round(total_value * 0.1, 2)  # Example 10% profit
-   
+    
+
 
     famous_tickers = {
-        "RELIANCE.NS": "Reliance",
-        "TCS.NS": "TCS",
-        "HDFCBANK.NS": "HDFC Bank",
-        "SBIN.NS": "SBI",
-        "INFY.NS": "Infosys"
-    }
+    "AAPL": "Apple",
+    "MSFT": "Microsoft",
+    "GOOGL": "Alphabet (Google)",
+    "AMZN": "Amazon",
+    "TSLA": "Tesla",
+    
+      }
 
+    # 🔑 Twelve Data API key
+    TD_API_KEY = 'd128a9e96d7c4442af79d360dacc2257'
+
+    # 📊 Fetch real-time quote data from Twelve Data API
     famous_stocks = []
-    for ticker, name in famous_tickers.items():
-        data = yf.download(ticker, period="1d", progress=False)
-        price = round(data["Close"].iloc[-1], 2) if not data.empty else "N/A"
-        famous_stocks.append({"name": name, "price": price})
+    for symbol, name in famous_tickers.items():
+        try:
+            response = requests.get(
+                "https://api.twelvedata.com/quote",
+                params={"symbol": symbol, "apikey": TD_API_KEY},
+                timeout=10  # avoid hanging if API is slow
+            )
+            data = response.json()
+
+            # Check for API error
+            if "price" not in data:
+                raise Exception(f"Twelve Data error: {data.get('message')}")
+
+            stock_info = {
+                "name": name,
+                "details": {
+                    "Price": data.get("price", "N/A"),
+                    "High": data.get("high", "N/A"),
+                    "Low": data.get("low", "N/A")
+                }
+            }
+        except Exception as e:
+            print(f"Error fetching {symbol}: {e}")
+            # In case of failure, add placeholder values
+            stock_info = {
+                "name": name,
+                "details": {
+                    "Price": "N/A",
+                    "High": "N/A",
+                    "Low": "N/A"
+                }
+            }
+        # Append to the final list
+        famous_stocks.append(stock_info)
 
     # Fetch current stock-related news
     news_articles = fetch_stock_news()
 
- 
     # Chart Data
     stock_labels = [stock.company_name for stock in portfolio_data]
     stock_shares = [stock.shares for stock in portfolio_data]
 
+    # Sector and Exchange Data
     from collections import Counter
     sector_counts = Counter(stock.sector for stock in portfolio_data)
     sector_labels = list(sector_counts.keys())
     sector_values = list(sector_counts.values())
-    exchange_labels = ['NSE', 'BSE']  # Example exchange labels
-    exchange_values = [0, 0]  # Example counts for exchanges
+    exchange_labels = ['NSE', 'BSE']
+    exchange_values = [0, 0]
 
     for stock in portfolio_data:
         if stock.exchange == 'NSE':
@@ -147,10 +222,10 @@ def dashboard():
         stock_shares=stock_shares,
         sector_labels=sector_labels,
         sector_values=sector_values,
-        exchange_labels=exchange_labels,  # Pass the exchange labels
+        exchange_labels=exchange_labels,
         exchange_values=exchange_values
-    
     )
+
 
 # API Endpoints
 @app.route("/api/portfolio")
@@ -277,29 +352,6 @@ def smart_insights():
 @app.route('/quiz')
 def quiz():
     return render_template('quiz.html')  
-
-# Alpha Vantage API key and base URL
-API_KEY = '2SU4SFQ9OYTZZMJ1'
-API_BASE_URL = 'https://www.alphavantage.co/query'
-
-
-# Function to get stock data
-def get_stock_data(symbol):
-    """Fetches daily stock data using Alpha Vantage API."""
-    params = {
-        'function': 'TIME_SERIES_DAILY',
-        'symbol': symbol,
-        'apikey': API_KEY
-    }
-    response = requests.get(API_BASE_URL, params=params)
-    data = response.json()
-
-    if 'Time Series (Daily)' in data:
-        stock_data = data['Time Series (Daily)']
-        return stock_data
-    else:
-        return None
-
 from flask import Flask, request, jsonify, render_template
 import tensorflow as tf
 import pickle
@@ -331,6 +383,46 @@ def predict_market_sentiment():
     sentiment = ['Negative', 'Neutral', 'Positive'][prediction.argmax()]
     
     return jsonify({'sentiment': sentiment})
+
+##Stock time series html 
+
+# Twelve Data API Key
+TD_API_KEY = 'd128a9e96d7c4442af79d360dacc2257'
+
+# Fetch stock time series data
+def fetch_time_series_dataabc(symbolabc):
+    url = f'https://api.twelvedata.com/time_series?symbol={symbolabc}&interval=1day&outputsize=30&apikey={TD_API_KEY}'
+    response = requests.get(url)
+    data = response.json()
+
+    if "values" in data:
+        return data["values"]
+    else:
+        print("API Error:", data.get("message"))
+        return None
+
+# Route to handle form input and display
+@app.route("/stockscreenerabc", methods=["GET", "POST"])
+def stock_screenerabc():
+    if request.method == "POST":
+        stock_symbolabc = request.form.get("symbolabc")
+        if stock_symbolabc:
+            return redirect(url_for("show_stock_dataabc", symbolabc=stock_symbolabc.upper()))
+        else:
+            flash("Please enter a stock symbol.")
+            return redirect(url_for("stock_screenerabc"))
+    return render_template("stock_time_series.html")
+
+# Route to show stock data
+@app.route("/stockabc/<symbolabc>")
+def show_stock_dataabc(symbolabc):
+    time_series_dataabc = fetch_time_series_dataabc(symbolabc)
+    if time_series_dataabc:
+        return render_template("stock_time_series.html", symbolabc=symbolabc, time_series_dataabc=time_series_dataabc)
+    else:
+        flash(f"No data found for symbol: {symbolabc}")
+        return redirect(url_for("stock_screenerabc"))
+
 
 
 # Create DB + Run App

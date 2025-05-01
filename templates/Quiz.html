@@ -141,14 +141,14 @@
     </div>
 
     <div class="controls">
-      <button id="next-btn" class="next-btn btn">Next</button>
+      <button id="next-btn" class="next-btn btn" style="display: none;">Next Question Loading Up ....</button>
     </div>
   </div>
 
   <div class="quiz-container" id="result" style="display: none;">
     <h1>🎉 Quiz Completed!</h1>
     <div id="final-score">You scored 0 points.</div>
-    <button class="btn" onclick="restartQuiz()">Play Again</button>
+    <button class="btn" onclick="window.location.href='dashboard.html'">Thank You</button>
   </div>
 
   <script>
@@ -204,7 +204,7 @@
     let score = 0;
     let timer;
     let timeLeft = 15;
-    
+
     function startGame() {
       score = 0;
       currentQuestionIndex = 0;
@@ -239,14 +239,13 @@
         const button = document.createElement('button');
         button.textContent = answer.text;
         button.classList.add('btn');
-        button.onclick = () => selectAnswer(answer);
+        button.onclick = () => selectAnswer(answer, button);
         buttons.appendChild(button);
       });
     }
 
-    function selectAnswer(answer) {
+    function selectAnswer(answer, button) {
       const correct = answer.correct;
-      const button = event.target;
       if (correct) {
         score++;
         button.classList.add('correct');
@@ -255,13 +254,22 @@
       }
 
       document.getElementById("score").textContent = `Score: ${score}`;
-      document.getElementById("next-btn").style.display = "block";
+
+      // Disable all buttons after selection
+      const allButtons = document.querySelectorAll('.btn');
+      allButtons.forEach(btn => btn.disabled = true);
+
+      // Show "Next" button after a short delay
+      setTimeout(() => {
+        document.getElementById("next-btn").style.display = "block";
+      }, 500);
     }
 
     function nextQuestion() {
       currentQuestionIndex++;
       if (currentQuestionIndex < questions.length) {
         showQuestion();
+        document.getElementById("next-btn").style.display = "none";
       } else {
         endGame();
       }

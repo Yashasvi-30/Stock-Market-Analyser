@@ -1,6 +1,6 @@
 :root {
-    --primary-color: rgb(42, 0, 111);
-    --secondary-color: rgb(42, 0, 111);
+    --primary-color: rgb(31, 65, 133);
+    --secondary-color: rgb(31, 65, 133);
     --black: #000000;
     --white: #ffffff;
     --gray: #efefef;
@@ -347,7 +347,7 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #4EA685;
+    background-color: #4e84a6;
     color: white;
     text-decoration: none;
     font-size: 18px;
@@ -368,7 +368,7 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    background-color: #4EA685;
+    background-color: #4e84a6;
     color: white;
     text-decoration: none;
     font-size: 18px;

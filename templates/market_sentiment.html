@@ -12,6 +12,10 @@
 </head>
 
 <body>
+    <video class="video-bg" autoplay muted loop>
+        <source src="static/Stock_Video2-2.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
     
         <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
             <div class="container-fluid">
@@ -23,7 +27,7 @@
                 <ul class="navbar-nav center-nav">
                   <li class="nav-item"><a class="nav-link" href="/dashboard">Dashboard</a></li>
                   <li class="nav-item"><a class="nav-link" href="/portfolio">Portfolio</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#risk">Risk Assessment</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/stockscreenerabc">Stock Screener</a></li>
                   <li class="nav-item"><a class="nav-link" href="/market_sentiment">Market Sentiment</a></li>
                   <li class="nav-item"><a class="nav-link" href="/smart-insights">Smart Insights</a></li>
                 </ul>
@@ -31,50 +35,79 @@
             </div>
           </nav>
    
-
-    <main>
-        <section class="sentiment-section">
-            <h1>Market Sentiment Analysis</h1>
-            <p>Share your thoughts about the stock market, and we'll analyze the sentiment for you!</p>
-            
-            <div class="form-container">
-                <form id="marketSentimentForm">
-                    <textarea id="marketInput" rows="4" placeholder="Enter your stock market sentiment..." required></textarea>
-                    <button type="submit">Analyze Sentiment</button>
-                </form>
+          <main>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <!-- Main Section with Sentiment Analysis -->
+            <section class="sentiment-section">
+                <div class="container">
+                    <h1 class="title">Market Sentiment Analysis</h1>
+                    <p class="description">Share your thoughts about the stock market, and we'll analyze the sentiment for you!</p>
+                    
+                    <!-- Form Container with Rounded Corners -->
+                    <div class="form-container">
+                        <form id="marketSentimentForm">
+                            <textarea id="marketInput" rows="4" placeholder="Enter your stock market sentiment..." required></textarea>
+                            <button type="submit">Analyze Sentiment</button>
+                        </form>
+                    </div>
+        
+                    <!-- Sentiment Result Section with Rounded Corners -->
+                    <div id="resultContainer" class="result-container">
+                        <h2 class="result-title">Predicted Sentiment</h2>
+                        <div class="result-box">
+                            <p id="sentimentResult" class="result-text">Your sentiment result will appear here...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <!-- Footer Container with Rounded Corners -->
+        <footer>
+            <div class="footer-container">
+                <p>&copy; 2025 Stock Portfolio Analyzer | All Rights Reserved</p>
             </div>
-            
-            <div id="resultContainer" class="result-container">
-                <h2>Predicted Sentiment</h2>
-                <p id="sentimentResult">Your sentiment result will appear here...</p>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2025 Stock Portfolio Analyzer | All Rights Reserved</p>
-    </footer>
-
-    <script>
-        document.getElementById('marketSentimentForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const marketMessage = document.getElementById('marketInput').value;
-
-            const response = await fetch('/predict-market-sentiment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ message: marketMessage })
+        </footer>
+        
+        
+        <script>
+            document.getElementById('marketSentimentForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const marketMessage = document.getElementById('marketInput').value;
+        
+                const response = await fetch('/predict-market-sentiment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: marketMessage })
+                });
+        
+                const data = await response.json();
+                const sentiment = data.sentiment.toLowerCase();
+                
+                const sentimentElement = document.getElementById('sentimentResult');
+                sentimentElement.innerText = `Sentiment: ${sentiment}`;
+        
+                // Reset classes
+                sentimentElement.classList.remove('positive', 'negative', 'neutral');
+        
+                // Add class based on sentiment
+                if (sentiment === 'positive') {
+                    sentimentElement.classList.add('positive');
+                } else if (sentiment === 'negative') {
+                    sentimentElement.classList.add('negative');
+                } else {
+                    sentimentElement.classList.add('neutral');
+                }
             });
-
-            const data = await response.json();
-            const sentiment = data.sentiment;
-            
-            document.getElementById('sentimentResult').innerText = `Sentiment: ${sentiment}`;
-        });
-    </script>
-
+        </script>
+        
 </body>
 
 </html>
